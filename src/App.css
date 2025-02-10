@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+.text-quicksand {
+  font-family: "Quicksand", serif;
+  font-optical-sizing: auto;
+}
