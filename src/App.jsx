@@ -43,7 +43,7 @@ function App() {
 
     timeoutId = setTimeout(() => {
       setDiamonds([]);
-    }, 5000); // 1 detik
+    }, 5000); // 5 detik
   };
 
   return (
