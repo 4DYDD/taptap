@@ -1,3 +1,5 @@
+import laptop from "../assets/img/laptop.png";
+import car from "../assets/img/car.png";
 import house from "../assets/img/house.png";
 
 function reward({ forMoney }) {
@@ -5,14 +7,14 @@ function reward({ forMoney }) {
     {
       money: forMoney,
       price: 50,
-      assetName: `house`,
-      assetUrl: house,
+      assetName: `laptop`,
+      assetUrl: laptop,
     },
     {
       money: forMoney,
       price: 100,
-      assetName: `house`,
-      assetUrl: house,
+      assetName: `car`,
+      assetUrl: car,
     },
     {
       money: forMoney,
