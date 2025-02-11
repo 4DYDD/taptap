@@ -4,46 +4,51 @@ import "./App.css";
 
 import cave from "./assets/img/cave.png";
 import diamond from "./assets/img/diamond.png";
-import house from "./assets/img/house.png";
+
+import Reward from "./components/reward";
+import reward from "./data/reward.js";
 
 function App() {
-  const [money, setMoney] = useState(0); // Array untuk menyimpan gambar diamond
-  const [diamonds, setDiamonds] = useState([]); // Array untuk menyimpan gambar diamond
-  // const [showDiamond, setShowDiamond] = useState(false); // State untuk menampilkan/menyembunyikan diamond
+  const [money, setMoney] = useState(0);
+  const [diamonds, setDiamonds] = useState([]);
 
   const caveImageRef = useRef(null);
-  let timeoutId = null; // ID timeout untuk menunda penghapusan
-  let newDiamond;
-  // const diamondImageRef = useRef(null);
 
-  const handleTouchStart = () => {
+  let timeoutId = null;
+  let newDiamond;
+
+  const handleTouchStart = (event) => {
+    event.preventDefault(); // Tambahkan ini
+
     setMoney(money + 1);
 
-    clearTimeout(timeoutId); // Batalkan timeout sebelumnya jika ada
+    clearTimeout(timeoutId);
     caveImageRef.current.classList.add("!scale-95");
 
-    const caveButton = caveImageRef.current.parentElement; // Ambil elemen button
-    const buttonRect = caveButton.getBoundingClientRect(); // Dapatkan ukuran dan posisi button
+    const caveButton = caveImageRef.current.parentElement;
+    const buttonRect = caveButton.getBoundingClientRect();
 
-    const x = buttonRect.left + buttonRect.width / 2 - 48; // Tengah gambar gua dikurangi setengah lebar diamond
-    const y = buttonRect.top - 40; // Tepat di atas gambar gua (48 adalah tinggi diamond + spasi)
+    const x = buttonRect.left + buttonRect.width / 2 - 48;
+    const y = buttonRect.top - 40;
 
     newDiamond = {
-      id: Date.now(), // ID unik berurutan
+      id: Date.now(),
       link: diamond,
       x: x,
       y: y,
     };
 
-    setDiamonds([...diamonds, newDiamond]); // Tambahkan diamond baru ke array
+    setDiamonds([...diamonds, newDiamond]);
   };
 
-  const handleTouchEnd = () => {
+  const handleTouchEnd = (event) => {
+    event.preventDefault(); // Tambahkan ini
+
     caveImageRef.current.classList.remove("!scale-95");
 
     timeoutId = setTimeout(() => {
       setDiamonds([]);
-    }, 5000); // 5 detik
+    }, 1000);
   };
 
   return (
@@ -58,52 +63,21 @@ function App() {
           <div className="flex flex-col items-center justify-center w-full h-48 py-32 text-center text-yellow-600 bg-yellow-200">
             <h1>BARANG YANG BISA DIBELI</h1>
             <br />
+
             {/* === RUMAHNYA === */}
             <div className="flex items-center justify-center gap-8">
-              <div className="size-24">
-                <div className="flex flex-col items-center justify-center">
-                  <img src={house} alt="house" className="mb-1 size-full" />
-                  <div className="w-full">
-                    {10 - money < 1 ? (
-                      <span className="block py-1 text-xs text-center text-green-200 bg-green-600 rounded-lg">
-                        bisa dibeli ✅
-                      </span>
-                    ) : (
-                      `\$${10 - money}`
-                    )}
-                  </div>
-                </div>
-              </div>
-              <div className="size-24">
-                <div className="flex flex-col items-center justify-center">
-                  <img src={house} alt="house" className="mb-1 size-full" />
-                  <div className="w-full">
-                    {100 - money < 1 ? (
-                      <span className="block py-1 text-xs text-center text-green-200 bg-green-600 rounded-lg">
-                        bisa dibeli ✅
-                      </span>
-                    ) : (
-                      `\$${100 - money}`
-                    )}
-                  </div>
-                </div>
-              </div>
-              <div className="size-24">
-                <div className="flex flex-col items-center justify-center">
-                  <img src={house} alt="house" className="mb-1 size-full" />
-                  <div className="w-full">
-                    {1000 - money < 1 ? (
-                      <span className="block py-1 text-xs text-center text-green-200 bg-green-600 rounded-lg">
-                        bisa dibeli ✅
-                      </span>
-                    ) : (
-                      `\$${1000 - money}`
-                    )}
-                  </div>
-                </div>
-              </div>
+              {reward({ forMoney: money }).map((value, index) => (
+                <Reward
+                  money={value.money}
+                  price={value.price}
+                  assetName={value.assetName}
+                  assetUrl={value.assetUrl}
+                />
+              ))}
             </div>
             {/* === RUMAHNYA === */}
+
+            <br />
           </div>
           <div className="flex flex-col items-center justify-center w-full h-full bg-yellow-500">
             {/* GOA */}
